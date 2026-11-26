@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Happy Birthday, Ruu! 🎂✨</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Caveat, Patrick Hand & Quicksand -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Patrick+Hand&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            hand: ['Caveat', 'cursive'],
+            note: ['Patrick Hand', 'cursive'],
+            sans: ['Quicksand', 'sans-serif'],
+          },
+          colors: {
+            cream: '#FAF5EE',
+            kraft: '#EFE6DA',
+            ink: '#4A3F35',
+            blush: '#F4C2C2',
+            roseSoft: '#FDE8EA',
+            peach: '#F7D6BF',
+            sage: '#CDE0C9',
+            butter: '#F9E8B2',
+            lavender: '#DFD3EB',
+            terracotta: '#D97B66',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* ========================================================= */
+    /* BASE SCRAPBOOK THEME & LAYOUT                             */
+    /* ========================================================= */
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      background-color: #EAE0D2;
+      color: #4A3F35;
+      overflow-x: hidden;
+    }
+
+    /* Warm Cream Paper with Subtle Dot-Grid */
+    .scrapbook-paper {
+      background-color: #FAF5EE;
+      background-image:
+        radial-gradient(rgba(166, 144, 121, 0.28) 1.1px, transparent 1.1px),
+        radial-gradient(rgba(166, 144, 121, 0.12) 1px, transparent 1px);
+      background-size: 22px 22px;
+      background-position: 0 0, 11px 11px;
+    }
+
+    /* Simple, Reliable Page Visibility Toggle */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+      animation: fadeIn 0.35s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ========================================================= */
+    /* POLAROID FRAMES & WASHI TAPE                              */
+    /* ========================================================= */
+    .polaroid {
+      background: #FFFFFF;
+      padding: 12px 12px 32px 12px;
+      border-radius: 6px;
+      box-shadow:
+        0 8px 20px rgba(74, 63, 53, 0.11),
+        0 2px 6px rgba(74, 63, 53, 0.06);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .polaroid:active {
+      transform: scale(0.98) rotate(0deg) !important;
+    }
+
+    .washi-tape {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 96px;
+      height: 24px;
+      opacity: 0.88;
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      clip-path: polygon(
+        2% 0%, 98% 0%, 100% 18%, 97% 38%, 100% 60%, 98% 82%, 100% 100%,
+        2% 100%, 0% 80%, 3% 58%, 0% 35%, 2% 15%
+      );
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .tape-blush {
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(244, 194, 194, 0.88),
+        rgba(244, 194, 194, 0.88) 8px,
+        rgba(255, 224, 224, 0.88) 8px,
+        rgba(255, 224, 224, 0.88) 16px
+      );
+    }
+
+    .tape-sage {
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(205, 224, 201, 0.9),
+        rgba(205, 224, 201, 0.9) 8px,
+        rgba(227, 239, 224, 0.9) 8px,
+        rgba(227, 239, 224, 0.9) 16px
+      );
+    }
+
+    .tape-butter {
+      background: rgba(249, 232, 178, 0.9);
+    }
+
+    .tape-lavender {
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(223, 211, 235, 0.88),
+        rgba(223, 211, 235, 0.88) 10px,
+        rgba(239, 232, 246, 0.88) 10px,
+        rgba(239, 232, 246, 0.88) 20px
+      );
+    }
+
+    .tape-peach {
+      background: rgba(247, 214, 191, 0.9);
+    }
+
+    /* ========================================================= */
+    /* 3D FLIP STICKY NOTE CARDS (PAGE 3)                        */
+    /* ========================================================= */
+    .flip-card {
+      perspective: 1000px;
+      height: 168px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.58s cubic-bezier(0.34, 1.4, 0.64, 1);
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 14px;
+      box-shadow: 0 6px 14px rgba(74, 63, 53, 0.08);
+    }
+
+    .flip-back {
+      transform: rotateY(180deg);
+    }
+
+    /* ========================================================= */
+    /* VINTAGE LINED STATIONERY PAPER (PAGE 4)                   */
+    /* ========================================================= */
+    .lined-paper {
+      background-color: #FFFDF9;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 31px,
+        rgba(217, 123, 102, 0.16) 31px,
+        rgba(217, 123, 102, 0.16) 32px
+      );
+      line-height: 32px;
+      box-shadow:
+        0 10px 26px rgba(74, 63, 53, 0.10),
+        0 2px 6px rgba(74, 63, 53, 0.05);
+    }
+
+    /* ========================================================= */
+    /* RISING FLOATING HEARTS (NON-BLOCKING)                     */
+    /* ========================================================= */
+    @keyframes heartRise {
+      0% {
+        transform: translateY(0) scale(0.6) rotate(0deg);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-190px) scale(1.3) rotate(18deg);
+        opacity: 0;
+      }
+    }
+
+    .rising-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      animation: heartRise 1.9s ease-out forwards;
+    }
+
+    /* ========================================================= */
+    /* CSS-ILLUSTRATED BIRTHDAY CAKE & CANDLE (PAGE 5)           */
+    /* ========================================================= */
+    .cake-scene {
+      position: relative;
+      width: 220px;
+      height: 225px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    /* Candle + Flame Assembly */
+    .candle-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 6;
+      margin-bottom: -4px;
+    }
+
+    .flame-glow {
+      position: absolute;
+      top: -26px;
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 224, 138, 0.85) 0%, rgba(255, 188, 107, 0.3) 50%, rgba(255, 188, 107, 0) 75%);
+      animation: glowPulse 2s ease-in-out infinite;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    .flame-glow.blown-out {
+      opacity: 0;
+      animation: none;
+    }
+
+    .flame {
+      position: relative;
+      width: 22px;
+      height: 34px;
+      background: linear-gradient(to top, #FF7A3D 0%, #FFB84D 55%, #FFF4B0 100%);
+      border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+      box-shadow: 0 0 14px rgba(255, 174, 66, 0.85);
+      transform-origin: center bottom;
+      animation: flameFlicker 1.2s ease-in-out infinite;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      margin-bottom: 2px;
+    }
+
+    .flame::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 17px;
+      background: #FFFBE0;
+      border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+    }
+
+    .flame.blown-out {
+      opacity: 0;
+      transform: scale(0.1) translateY(-10px);
+      animation: none;
+    }
+
+    .wick {
+      width: 3px;
+      height: 9px;
+      background: #5C4D42;
+      border-radius: 2px;
+    }
+
+    .candle-body {
+      width: 18px;
+      height: 42px;
+      border-radius: 4px 4px 2px 2px;
+      background: repeating-linear-gradient(
+        -35deg,
+        #FFFDF9,
+        #FFFDF9 6px,
+        #F4A9A8 6px,
+        #F4A9A8 12px
+      );
+      border: 1.5px solid #E8C5BF;
+      box-shadow: inset -3px 0 5px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Smoke Wisps */
+    .smoke-container {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .smoke-puff {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(186, 174, 163, 0.55);
+      filter: blur(3px);
+      opacity: 0;
+    }
+
+    .smoke-puff.puff-1.active {
+      animation: smokeRise1 1.9s ease-out forwards;
+    }
+
+    .smoke-puff.puff-2.active {
+      animation: smokeRise2 2.2s ease-out 0.22s forwards;
+    }
+
+    .smoke-puff.puff-3.active {
+      animation: smokeRise1 2.4s ease-out 0.45s forwards;
+    }
+
+    @keyframes flameFlicker {
+      0%, 100% { transform: scale(1) rotate(-2deg); }
+      25% { transform: scale(1.06, 0.95) rotate(2.5deg); }
+      50% { transform: scale(0.95, 1.07) rotate(-1.5deg); }
+      75% { transform: scale(1.04, 0.97) rotate(1.5deg); }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.72; transform: scale(1); }
+      50% { opacity: 0.98; transform: scale(1.1); }
+    }
+
+    @keyframes smokeRise1 {
+      0% { opacity: 0; transform: translate(-7px, 0) scale(0.5); }
+      25% { opacity: 0.7; }
+      100% { opacity: 0; transform: translate(-18px, -58px) scale(2.1); }
+    }
+
+    @keyframes smokeRise2 {
+      0% { opacity: 0; transform: translate(-5px, 0) scale(0.5); }
+      25% { opacity: 0.65; }
+      100% { opacity: 0; transform: translate(12px, -64px) scale(2.2); }
+    }
+
+    /* Cake Tiers */
+    .cake-tier-top {
+      position: relative;
+      width: 112px;
+      height: 48px;
+      background: #FADCD9;
+      border: 2px solid #E9BEB9;
+      border-radius: 12px 12px 6px 6px;
+      z-index: 4;
+      overflow: hidden;
+    }
+
+    .cake-tier-bottom {
+      position: relative;
+      width: 162px;
+      height: 58px;
+      background: #FBE5C8;
+      border: 2px solid #E6C7A1;
+      border-radius: 12px 12px 10px 10px;
+      margin-top: -4px;
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    /* Frosting Tops & Drips */
+    .frosting-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 16px;
+      background: #FFF9F2;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .frosting-bottom {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 16px;
+      background: #D8E8D4;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .drip {
+      position: absolute;
+      top: 12px;
+      width: 16px;
+      border-radius: 0 0 10px 10px;
+    }
+
+    .drip-cream { background: #FFF9F2; }
+    .drip-sage { background: #D8E8D4; }
+
+    /* Jam Stripe on Bottom Tier */
+    .jam-stripe {
+      position: absolute;
+      top: 32px;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: rgba(244, 194, 194, 0.72);
+    }
+
+    /* Colorful Sprinkles */
+    .sprinkle {
+      position: absolute;
+      width: 7px;
+      height: 3px;
+      border-radius: 3px;
+      z-index: 5;
+    }
+
+    /* Cake Plate */
+    .cake-plate {
+      width: 196px;
+      height: 16px;
+      background: #FFFFFF;
+      border: 2px solid #E5D7C6;
+      border-radius: 50%;
+      margin-top: -6px;
+      z-index: 2;
+      box-shadow: 0 6px 10px rgba(74, 63, 53, 0.12);
+    }
+
+    /* Twinkling Stars after Blow-Out */
+    @keyframes starTwinkle {
+      0%, 100% { opacity: 0.25; transform: scale(0.8) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1.22) rotate(12deg); }
+    }
+
+    .wish-stars {
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+    }
+
+    .wish-stars.visible {
+      opacity: 1;
+    }
+
+    .wish-stars.visible .twinkle-1 { animation: starTwinkle 2s ease-in-out infinite; }
+    .wish-stars.visible .twinkle-2 { animation: starTwinkle 2.5s ease-in-out 0.4s infinite; }
+    .wish-stars.visible .twinkle-3 { animation: starTwinkle 1.8s ease-in-out 0.8s infinite; }
+
+    /* Active Bottom Nav Tab */
+    .nav-btn {
+      color: #8E7B69;
+      background-color: transparent;
+      transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    }
+
+    .nav-btn.active {
+      background-color: #FDE8EA;
+      color: #C9655A;
+    }
+
+    .nav-btn:active {
+      transform: scale(0.94);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex justify-center sm:py-6 sm:px-4">
+
+  <!-- Full-screen Non-Blocking Pastel Confetti Canvas -->
+  <canvas
+    id="confetti-canvas"
+    style="position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"
+  ></canvas>
+
+  <!-- Centered Mobile-First Scrapbook Shell -->
+  <main class="relative w-full max-w-[460px] min-h-screen sm:min-h-[820px] scrapbook-paper sm:rounded-[32px] sm:shadow-2xl sm:border sm:border-[#E3D5C3] flex flex-col">
+
+    <!-- Main Scrollable Content Area (extra bottom padding so fixed nav never overlaps) -->
+    <div id="page-container" class="relative z-10 flex-1 px-5 pt-7 pb-32">
+
+      <!-- ========================================================= -->
+      <!-- PAGE 1: HOME                                              -->
+      <!-- ========================================================= -->
+      <section id="page-1" class="page active">
+        <div class="flex justify-center mb-4">
+          <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/85 border border-[#E5D7C6] text-xs font-semibold tracking-wide text-[#8C735B] shadow-sm">
+            <span>✨</span> SPECIAL BIRTHDAY CARD • FOR PIXIE <span>✨</span>
+          </span>
+        </div>
+
+        <!-- Hero Polaroid Frame -->
+        <div class="relative mx-auto max-w-[285px] mt-4 mb-6">
+          <div class="washi-tape tape-blush"></div>
+          <div class="polaroid -rotate-2">
+            <div class="aspect-square w-full overflow-hidden rounded-sm bg-[#F5EBE0]">
+              <!-- REPLACE HERO PHOTO: Change src to your own photo filename e.g. "ruu-hero.jpg" -->
+              <img
+                src="images/hero.JPG"
+                alt="Favorite photo of Ruu"
+                onerror="this.src='https://placehold.co/600x600/F6E4D5/8C654C?text=My+Modak+%E2%99%A5';"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <p class="font-hand text-3xl text-center text-ink mt-3 leading-none">
+              My Modak♥️
+            </p>
+          </div>
+        </div>
+
+        <!-- Welcome Greeting -->
+        <div class="text-center px-2">
+          <h1 class="font-hand text-5xl font-bold text-ink leading-tight">
+            Happy Birthday, Ruu!
+          </h1>
+          <p class="mt-2.5 text-sm sm:text-base text-[#786554] font-medium leading-relaxed">
+            A cozy little digital gift tailored just for you— keep going till the end.
+          </p>
+        </div>
+
+        <!-- Interactive "Open Your Gift" CTA -->
+        <div class="mt-7 flex flex-col items-center">
+          <button
+            id="open-gift-btn"
+            type="button"
+            class="w-full max-w-[280px] inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl bg-terracotta text-white font-semibold text-base shadow-[0_8px_20px_rgba(217,123,102,0.35)] hover:bg-[#cc6c57] active:scale-95 transition-all"
+          >
+            <span>Open Your Gift</span>
+            <span class="text-xl">🎁</span>
+          </button>
+          <p class="mt-3 text-xs text-[#9E8A78]">
+          </p>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- PAGE 2: MEMORIES (POLAROID GALLERY)                       -->
+      <!-- ========================================================= -->
+      <section id="page-2" class="page">
+        <div class="text-center mb-7">
+          <span class="inline-block text-2xl mb-1">📸</span>
+          <h2 class="font-hand text-4xl font-bold text-ink">Snapshots</h2>
+          <p class="text-xs sm:text-sm text-[#857260] mt-1">
+            Tap any Polaroid to zoom in &amp; read the memory note
+          </p>
+        </div>
+
+        <!-- 5 Polaroids injected dynamically from MEMORIES array -->
+        <div id="polaroid-gallery" class="space-y-9 px-1"></div>
+
+        <!-- Page Navigation Buttons -->
+        <div class="mt-10 flex items-center justify-between gap-3">
+          <button
+            type="button"
+            data-page="1"
+            class="nav-trigger px-4 py-3 rounded-xl bg-white border border-[#E5D7C6] text-ink text-sm font-semibold shadow-sm hover:bg-[#F7EFE6] active:scale-95 transition"
+          >
+            ← Home
+          </button>
+          <button
+            type="button"
+            data-page="3"
+            class="nav-trigger flex-1 px-5 py-3 rounded-xl bg-terracotta text-white text-sm font-semibold shadow-md hover:bg-[#cc6c57] active:scale-95 transition"
+          >
+            Next: Reasons I Love You →
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- PAGE 3: REASONS I LOVE YOU (6 FLIP CARDS)                 -->
+      <!-- ========================================================= -->
+      <section id="page-3" class="page">
+        <div class="text-center mb-5">
+          <span class="inline-block text-2xl mb-1">💌</span>
+          <h2 class="font-hand text-4xl font-bold text-ink leading-tight">
+            Little Things I Adore
+          </h2>
+          <p class="text-xs sm:text-sm text-[#857260] mt-1">
+            Tap each sticky note to flip it over
+          </p>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="flex items-center justify-center mb-5">
+          <div class="inline-flex items-center gap-2.5 bg-white/90 border border-[#E5D7C6] px-4 py-1.5 rounded-full shadow-sm">
+            <span id="reveal-counter" class="text-xs font-bold text-terracotta">0 / 6 revealed</span>
+            <div class="w-24 h-2 bg-[#EFE6DA] rounded-full overflow-hidden">
+              <div id="reveal-progress" class="h-full bg-terracotta rounded-full transition-all duration-300" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2-Column Grid of 6 3D Flip Cards -->
+        <div id="reasons-grid" class="grid grid-cols-2 gap-3.5"></div>
+
+        <!-- Celebration Banner (Shown when all 6 are revealed) -->
+        <div id="all-revealed-banner" class="hidden mt-6 p-4 rounded-2xl bg-[#FFF8EB] border-2 border-dashed border-[#E8C57B] text-center shadow-sm">
+          <p class="font-hand text-2xl font-bold text-ink">
+            You revealed all 6! 🎉
+          </p>
+          <p class="text-xs sm:text-sm text-[#786554] mt-1">
+            And honestly, Ruu, I could easily fill a whole notebook with more.
+          </p>
+        </div>
+
+        <!-- Page Navigation Buttons -->
+        <div class="mt-8 flex items-center justify-between gap-3">
+          <button
+            type="button"
+            data-page="2"
+            class="nav-trigger px-4 py-3 rounded-xl bg-white border border-[#E5D7C6] text-ink text-sm font-semibold shadow-sm hover:bg-[#F7EFE6] active:scale-95 transition"
+          >
+            ← Memories
+          </button>
+          <button
+            type="button"
+            data-page="4"
+            class="nav-trigger flex-1 px-5 py-3 rounded-xl bg-terracotta text-white text-sm font-semibold shadow-md hover:bg-[#cc6c57] active:scale-95 transition"
+          >
+            Next: Read Your Letter →
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- PAGE 4: BIRTHDAY LETTER                                   -->
+      <!-- ========================================================= -->
+      <section id="page-4" class="page">
+        <div class="text-center mb-6">
+          <span class="inline-block text-2xl mb-1">📜</span>
+          <h2 class="font-hand text-4xl font-bold text-ink">A Letter for You</h2>
+          <p class="text-xs sm:text-sm text-[#857260]">
+            From my rooh to my ruu, on your special day
+          </p>
+        </div>
+
+        <!-- Vintage Lined Stationery Paper -->
+        <div class="relative mt-4">
+          <div class="washi-tape tape-peach"></div>
+          <div class="lined-paper rounded-xl px-6 pt-8 pb-7 border border-[#EAE0D2]">
+            <p class="font-hand text-3xl font-bold text-terracotta mb-2">
+              Dear Ruu,
+            </p>
+
+            <div class="font-note text-[19px] text-ink space-y-4">
+              <p>
+                Happy Birthday to the brightest, kindest, and most wonderful part of my days. I wanted to make you something you can keep in your pocket and open whenever you need a little smile.
+              </p>
+              <p>
+                Thank you for every laugh we have shared, every quiet moment that felt like home, and for simply being your amazing self. You make even the most ordinary days feel like my favorite memories.
+              </p>
+              <p>
+                I know aap aaj kal bhagwanji se kuch nhi mangte, par aaj me mangne wala hun, ki tumhar khwaish poori ho. Tumhare chere ki muskurahat kabhi na jae aur tumhe zindagi me wo sab mile jiski tumne kabhi khwaish ki ho
+              </p>
+            </div>
+
+            <div class="mt-6 text-right">
+              <p class="font-hand text-3xl font-bold text-terracotta">
+                Only Yours - Aapka EE
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Hug & Confetti Button -->
+        <div class="mt-7 text-center">
+          <button
+            id="hug-btn"
+            type="button"
+            class="w-full py-4 px-5 rounded-2xl bg-gradient-to-r from-[#D97B66] to-[#E69784] text-white font-semibold text-base shadow-[0_8px_20px_rgba(217,123,102,0.35)] hover:brightness-105 active:scale-95 transition-all flex items-center justify-center gap-2"
+          >
+            <span>Tap for a Birthday Hug &amp; Confetti</span>
+            <span class="text-xl">🤗</span>
+          </button>
+
+          <p id="hug-toast" class="mt-3 opacity-0 transition-opacity duration-300 text-sm font-semibold text-terracotta">
+            Sending you the biggest birthday hug, Ruu! 💕✨
+          </p>
+        </div>
+
+        <!-- Page Navigation Buttons -->
+        <div class="mt-5 flex items-center justify-between gap-3">
+          <button
+            type="button"
+            data-page="3"
+            class="nav-trigger px-4 py-3 rounded-xl bg-white border border-[#E5D7C6] text-ink text-sm font-semibold shadow-sm hover:bg-[#F7EFE6] active:scale-95 transition"
+          >
+            ← Reasons
+          </button>
+          <button
+            type="button"
+            data-page="5"
+            class="nav-trigger flex-1 px-4 py-3 rounded-xl bg-terracotta text-white text-sm font-semibold shadow-md hover:bg-[#cc6c57] active:scale-95 transition"
+          >
+            Go to Your Birthday Cake 🎂 →
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- PAGE 5: MAKE A WISH (BIRTHDAY CAKE & CANDLE)              -->
+      <!-- ========================================================= -->
+      <section id="page-5" class="page">
+        <div class="text-center mb-4">
+          <h2 class="font-hand text-4xl sm:text-5xl font-bold text-ink leading-tight">
+            Make a Wish, Ruu! ✨
+          </h2>
+          <p class="text-xs sm:text-sm text-[#786554] mt-1.5 px-2 leading-relaxed">
+            Close your eyes, make a heartfelt birthday wish, and blow out your candle!
+          </p>
+        </div>
+
+        <!-- Taped Scrapbook Cake Card -->
+        <div class="relative mx-auto max-w-[330px] mt-5 mb-5">
+          <div class="washi-tape tape-lavender"></div>
+          <div
+            id="cake-stage"
+            role="button"
+            tabindex="0"
+            aria-label="Tap to blow out the birthday candle"
+            class="relative bg-[#FFFDF9] border border-[#EAE0D2] rounded-2xl px-4 pt-7 pb-5 shadow-[0_10px_26px_rgba(74,63,53,0.10)] flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden transition-colors duration-700"
+          >
+            <!-- Soft Twinkling Stars (Visible after blow-out) -->
+            <div id="wish-stars" class="wish-stars absolute inset-0">
+              <span class="twinkle-1 absolute top-5 left-7 text-lg text-[#E5B85B]">✦</span>
+              <span class="twinkle-2 absolute top-9 right-8 text-xl text-[#D97B66]">✨</span>
+              <span class="twinkle-3 absolute top-24 left-9 text-sm text-[#B89FD4]">✦</span>
+              <span class="twinkle-1 absolute top-20 right-11 text-base text-[#E5B85B]">★</span>
+              <span class="twinkle-2 absolute top-6 left-1/2 -translate-x-1/2 text-xs text-[#E8A5A5]">✦</span>
+            </div>
+
+            <!-- CSS-Illustrated Pastel Layered Birthday Cake -->
+            <div class="cake-scene">
+              <!-- Candle & Flame -->
+              <div class="candle-wrap">
+                <div id="flame-glow" class="flame-glow"></div>
+                <div class="smoke-container">
+                  <div id="smoke-1" class="smoke-puff puff-1"></div>
+                  <div id="smoke-2" class="smoke-puff puff-2"></div>
+                  <div id="smoke-3" class="smoke-puff puff-3"></div>
+                </div>
+                <div id="candle-flame" class="flame"></div>
+                <div class="wick"></div>
+                <div class="candle-body"></div>
+              </div>
+
+              <!-- Top Tier (Strawberry Blush) -->
+              <div class="cake-tier-top">
+                <div class="frosting-top"></div>
+                <div class="drip drip-cream" style="left: 8px; height: 14px;"></div>
+                <div class="drip drip-cream" style="left: 32px; height: 20px;"></div>
+                <div class="drip drip-cream" style="left: 60px; height: 15px;"></div>
+                <div class="drip drip-cream" style="left: 84px; height: 18px;"></div>
+                <!-- Sprinkles -->
+                <span class="sprinkle" style="top: 6px; left: 16px; background: #D97B66; transform: rotate(18deg);"></span>
+                <span class="sprinkle" style="top: 8px; left: 42px; background: #B8D8BA; transform: rotate(-25deg);"></span>
+                <span class="sprinkle" style="top: 6px; left: 70px; background: #D4C1EC; transform: rotate(22deg);"></span>
+                <span class="sprinkle" style="top: 9px; left: 90px; background: #F4A9A8; transform: rotate(-15deg);"></span>
+              </div>
+
+              <!-- Bottom Tier (Warm Vanilla Cream) -->
+              <div class="cake-tier-bottom">
+                <div class="frosting-bottom"></div>
+                <div class="drip drip-sage" style="left: 12px; height: 15px;"></div>
+                <div class="drip drip-sage" style="left: 42px; height: 21px;"></div>
+                <div class="drip drip-sage" style="left: 74px; height: 14px;"></div>
+                <div class="drip drip-sage" style="left: 104px; height: 20px;"></div>
+                <div class="drip drip-sage" style="left: 134px; height: 15px;"></div>
+                <div class="jam-stripe"></div>
+                <!-- Sprinkles -->
+                <span class="sprinkle" style="top: 6px; left: 22px; background: #D97B66; transform: rotate(-20deg);"></span>
+                <span class="sprinkle" style="top: 8px; left: 56px; background: #F9DF8B; transform: rotate(24deg);"></span>
+                <span class="sprinkle" style="top: 6px; left: 90px; background: #D4C1EC; transform: rotate(-16deg);"></span>
+                <span class="sprinkle" style="top: 8px; left: 124px; background: #F4A9A8; transform: rotate(18deg);"></span>
+                <!-- Little Center Heart -->
+                <span class="absolute bottom-1.5 left-1/2 -translate-x-1/2 text-xs text-terracotta">♥</span>
+              </div>
+
+              <!-- Cake Plate -->
+              <div class="cake-plate"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wish Granted Message (Revealed after blow-out) -->
+        <div
+          id="wish-revealed-card"
+          class="hidden mb-5 p-4 rounded-2xl bg-[#FFF8EB] border-2 border-dashed border-[#E8C57B] text-center shadow-sm"
+        >
+          <p class="font-hand text-3xl font-bold text-terracotta leading-snug">
+            Wish made! ✨
+          </p>
+          <p class="text-sm font-medium text-ink mt-1.5 leading-relaxed">
+            May every single dream of yours come true, Ruu. Happy Birthday, My Modak! 💖🎂
+          </p>
+        </div>
+
+        <!-- Blow-Out & Mic Controls -->
+        <div class="flex flex-col items-center gap-2.5">
+          <button
+            id="blow-candle-btn"
+            type="button"
+            class="w-full max-w-[300px] py-4 px-6 rounded-2xl bg-terracotta text-white font-semibold text-base shadow-[0_8px_20px_rgba(217,123,102,0.35)] hover:bg-[#cc6c57] active:scale-95 transition-all flex items-center justify-center gap-2"
+          >
+            <span>Blow Out the Candle</span>
+            <span class="text-xl">🌬️</span>
+          </button>
+
+          <button
+            id="mic-blow-btn"
+            type="button"
+            class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/90 border border-[#E5D7C6] text-xs font-semibold text-[#786554] shadow-sm hover:bg-[#F7EFE6] active:scale-95 transition"
+          >
+            <span>🎤</span>
+            <span id="mic-btn-label">Use Mic to Blow</span>
+          </button>
+          <p id="mic-status" class="hidden text-xs font-medium text-terracotta text-center px-4"></p>
+
+          <button
+            id="relight-btn"
+            type="button"
+            class="hidden mt-1 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-white border border-[#E5D7C6] text-ink text-sm font-semibold shadow-sm hover:bg-[#F7EFE6] active:scale-95 transition"
+          >
+            <span>Relight Candle</span>
+            <span>🕯️</span>
+          </button>
+        </div>
+
+        <!-- Bottom Navigation Buttons -->
+        <div class="mt-8 flex items-center justify-between gap-3">
+          <button
+            type="button"
+            data-page="4"
+            class="nav-trigger px-4 py-3 rounded-xl bg-white border border-[#E5D7C6] text-ink text-sm font-semibold shadow-sm hover:bg-[#F7EFE6] active:scale-95 transition"
+          >
+            ← Back to Letter
+          </button>
+          <button
+            type="button"
+            data-page="1"
+            class="nav-trigger px-4 py-3 rounded-xl bg-white/80 border border-[#E5D7C6] text-[#8C735B] text-sm font-semibold shadow-sm hover:bg-[#F7EFE6] active:scale-95 transition"
+          >
+            ↺ Home
+          </button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- FIXED 5-TAB BOTTOM NAVIGATION BAR (z-index: 1000)         -->
+    <!-- ========================================================= -->
+    <nav
+      aria-label="Scrapbook pages"
+      style="z-index: 1000;"
+      class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[460px] bg-[#FFFDF9]/95 backdrop-blur-md border-t border-[#E6D9C8] px-2 py-2 shadow-[0_-4px_16px_rgba(74,63,53,0.08)]"
+    >
+      <div class="grid grid-cols-5 gap-1">
+        <button type="button" data-page="1" class="nav-btn active flex flex-col items-center justify-center py-2 px-1 rounded-xl">
+          <span class="text-lg leading-none">🏠</span>
+          <span class="text-[11px] font-semibold mt-1">Home</span>
+        </button>
+        <button type="button" data-page="2" class="nav-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl">
+          <span class="text-lg leading-none">📸</span>
+          <span class="text-[11px] font-semibold mt-1">Memories</span>
+        </button>
+        <button type="button" data-page="3" class="nav-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl">
+          <span class="text-lg leading-none">💌</span>
+          <span class="text-[11px] font-semibold mt-1">Reasons</span>
+        </button>
+        <button type="button" data-page="4" class="nav-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl">
+          <span class="text-lg leading-none">📜</span>
+          <span class="text-[11px] font-semibold mt-1">Letter</span>
+        </button>
+        <button type="button" data-page="5" class="nav-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl">
+          <span class="text-lg leading-none">🕯️</span>
+          <span class="text-[11px] font-semibold mt-1">Wish</span>
+        </button>
+      </div>
+    </nav>
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- POLAROID LIGHTBOX MODAL (PAGE 2)                          -->
+  <!-- ========================================================= -->
+  <div
+    id="lightbox-modal"
+    style="z-index: 2000;"
+    class="fixed inset-0 hidden items-center justify-center bg-black/65 backdrop-blur-sm p-5"
+  >
+    <div
+      id="lightbox-card"
+      class="relative w-full max-w-[360px] bg-white rounded-2xl p-4 pb-6 shadow-2xl"
+    >
+      <button
+        id="lightbox-close-btn"
+        type="button"
+        aria-label="Close photo"
+        class="absolute -top-3 -right-3 w-9 h-9 rounded-full bg-ink text-white flex items-center justify-center shadow-md hover:bg-terracotta transition"
+      >
+        ✕
+      </button>
+
+      <div class="w-full aspect-square rounded-lg overflow-hidden bg-[#F5EBE0]">
+        <img id="lightbox-img" src="" alt="Memory zoomed" class="w-full h-full object-cover" />
+      </div>
+
+      <div class="mt-4 text-center px-1">
+        <span id="lightbox-date" class="inline-block text-[11px] font-bold uppercase tracking-wider text-terracotta bg-[#FDF1EC] px-2.5 py-0.5 rounded-full"></span>
+        <h3 id="lightbox-caption" class="font-hand text-3xl font-bold text-ink mt-1.5"></h3>
+        <p id="lightbox-note" class="text-sm text-[#726050] mt-2 leading-relaxed"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- CLEAN, BUG-FREE VANILLA JAVASCRIPT                        -->
+  <!-- ========================================================= -->
+  <script>
+    function initScrapbookApp() {
+      /* ---------------------------------------------------------
+         1. CUSTOMIZE YOUR PHOTOS & MEMORIES HERE (Page 2)
+         Replace `src` with your own photo filenames (e.g. "photo1.jpg")
+         placed in the same folder as index.html.
+         --------------------------------------------------------- */
+      const MEMORIES = [
+        {
+          src: 'images/photo1.JPG',
+          caption: 'Our very first photo',
+          date: 'DAY ONE ✨',
+          note: 'Even though this is OUR first photo. I still remember the first time I saw you. Something clicked from the very start.',
+          tapeClass: 'tape-blush',
+          tilt: '-rotate-2'
+        },
+        {
+          src: 'images/photo2.JPG',
+          caption: 'My Passenger Princess',
+          date: 'FAVORITE DATE ☕',
+          note: 'My most dedicated and humble colleague. Always remember there will always be one person cheering for you forever.',
+          tapeClass: 'tape-sage',
+          tilt: 'rotate-2'
+        },
+        {
+          src: 'images/photo3.JPG',
+          caption: 'My Desi Girl',
+          date: 'SUNSET WALK 🌅',
+          note: 'Saree ki har silwat mein kuch aisa thehrav hai uske, Ki nigahein toh theharti hi hain, rooh bhi sukoon paa leti hai.',
+          tapeClass: 'tape-butter',
+          tilt: '-rotate-1'
+        },
+        {
+          src: 'images/photo4.jpg',
+          caption: 'Our silly candid moment',
+          date: 'PURE JOY 📸',
+          note: 'Not a posed photo at all—just us being completely goofy and happy together.',
+          tapeClass: 'tape-lavender',
+          tilt: 'rotate-1'
+        },
+        {
+          src: 'images/photo5.JPG',
+          caption: 'Cheers to the most amazing memory',
+          date: 'ALWAYS & FOREVER ♥',
+          note: 'The day I wish to relieve again and again. Thanks BFF!',
+          tapeClass: 'tape-peach',
+          tilt: '-rotate-2'
+        }
+      ];
+
+      /* ---------------------------------------------------------
+         2. CUSTOMIZE YOUR 6 "REASONS I LOVE YOU" CARDS (Page 3)
+         --------------------------------------------------------- */
+      const REASONS = [
+        {
+          emoji: '✨',
+          title: 'Your Laugh',
+          message: 'The way your laugh instantly brightens the entire room and makes every bad day disappear.',
+          frontBg: 'bg-[#FCEAE8]',
+          border: 'border-[#F3D1CE]'
+        },
+        {
+          emoji: '🤍',
+          title: 'The Way You Care',
+          message: 'The way you care through actions which makes you most special',
+          frontBg: 'bg-[#EAF3E7]',
+          border: 'border-[#CEE0C9]'
+        },
+        {
+          emoji: '💬',
+          title: 'Our Talks',
+          message: 'Every conversation with you makes time fly by and somehow always feels like home.',
+          frontBg: 'bg-[#EFEAF6]',
+          border: 'border-[#DDD2EC]'
+        },
+        {
+          emoji: '🗺️',
+          title: 'Our Adventures',
+          message: 'You know very well how adventurous you are😜',
+          frontBg: 'bg-[#FBECE0]',
+          border: 'border-[#EED3BE]'
+        },
+        {
+          emoji: '😤',
+          title: 'When You Are Angry',
+          message: 'Even when you are angry at me, you are still the cutest person in the world and impossible not to adore.',
+          frontBg: 'bg-[#FDF4DA]',
+          border: 'border-[#EFE0B4]'
+        },
+        {
+          emoji: '🌸',
+          title: 'Just Being You',
+          message: 'I love all your little quirks and the effortless warmth you bring into every single day.',
+          frontBg: 'bg-[#FCEEF2]',
+          border: 'border-[#F2D3DD]'
+        }
+      ];
+
+      /* ---------------------------------------------------------
+         3. APP STATE
+         --------------------------------------------------------- */
+      const flippedSet = new Set();
+      let candleLit = true;
+      let micActive = false;
+      let micStream = null;
+      let audioContext = null;
+      let micRafId = null;
+      let hugToastTimer = null;
+
+      /* ---------------------------------------------------------
+         4. PASTEL CONFETTI ENGINE (Zero external dependencies)
+         --------------------------------------------------------- */
+      const confettiCanvas = document.getElementById('confetti-canvas');
+      const confettiCtx = confettiCanvas ? confettiCanvas.getContext('2d') : null;
+      let confettiPieces = [];
+      let confettiAnimating = false;
+
+      const PASTEL_COLORS = ['#F4A9A8', '#F7C59F', '#F9DF8B', '#B8D8BA', '#D4C1EC', '#D97B66'];
+
+      function resizeConfettiCanvas() {
+        if (!confettiCanvas) return;
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+      }
+
+      function launchConfetti(count) {
+        if (!confettiCanvas || !confettiCtx) return;
+        const total = typeof count === 'number' ? count : 80;
+        resizeConfettiCanvas();
+
+        for (let i = 0; i < total; i++) {
+          confettiPieces.push({
+            x: window.innerWidth * (0.2 + Math.random() * 0.6),
+            y: window.innerHeight * 0.35 + (Math.random() * 60 - 30),
+            vx: (Math.random() - 0.5) * 11,
+            vy: -Math.random() * 11 - 3,
+            size: Math.random() * 7 + 5,
+            color: PASTEL_COLORS[Math.floor(Math.random() * PASTEL_COLORS.length)],
+            rotation: Math.random() * 360,
+            vr: (Math.random() - 0.5) * 10,
+            gravity: 0.24,
+            opacity: 1,
+            shape: Math.random() > 0.35 ? 'rect' : 'circle'
+          });
+        }
+
+        if (!confettiAnimating) {
+          confettiAnimating = true;
+          animateConfetti();
+        }
+      }
+
+      function animateConfetti() {
+        if (!confettiCtx || !confettiCanvas) return;
+        confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+
+        for (let i = 0; i < confettiPieces.length; i++) {
+          const p = confettiPieces[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += p.gravity;
+          p.vx *= 0.99;
+          p.rotation += p.vr;
+          if (p.y > confettiCanvas.height * 0.78) {
+            p.opacity -= 0.025;
+          }
+
+          confettiCtx.save();
+          confettiCtx.globalAlpha = Math.max(0, p.opacity);
+          confettiCtx.translate(p.x, p.y);
+          confettiCtx.rotate((p.rotation * Math.PI) / 180);
+          confettiCtx.fillStyle = p.color;
+
+          if (p.shape === 'rect') {
+            confettiCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+          } else {
+            confettiCtx.beginPath();
+            confettiCtx.arc(0, 0, p.size / 2.2, 0, Math.PI * 2);
+            confettiCtx.fill();
+          }
+          confettiCtx.restore();
+        }
+
+        confettiPieces = confettiPieces.filter(function (p) {
+          return p.opacity > 0 && p.y < confettiCanvas.height + 30;
+        });
+
+        if (confettiPieces.length > 0) {
+          requestAnimationFrame(animateConfetti);
+        } else {
+          confettiAnimating = false;
+          confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+        }
+      }
+
+      window.addEventListener('resize', resizeConfettiCanvas);
+      resizeConfettiCanvas();
+
+      /* ---------------------------------------------------------
+         5. PAGE NAVIGATION (Reliable + Exposed as window.goToPage)
+         --------------------------------------------------------- */
+      function goToPage(pageNum) {
+        const targetNum = Number(pageNum);
+        if (!targetNum || targetNum < 1 || targetNum > 5) return;
+
+        // Stop mic safely if navigating away from Page 5
+        if (targetNum !== 5 && micActive) {
+          stopMicListener(false);
+        }
+
+        // Toggle active class on page sections
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(function (section) {
+          if (section.id === 'page-' + targetNum) {
+            section.classList.add('active');
+          } else {
+            section.classList.remove('active');
+          }
+        });
+
+        // Update active highlight on bottom navigation bar
+        const navButtons = document.querySelectorAll('.nav-btn');
+        navButtons.forEach(function (btn) {
+          const btnPage = Number(btn.getAttribute('data-page'));
+          if (btnPage === targetNum) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+
+        // Scroll cleanly to top on every page switch
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Expose globally as a reliable backup
+      window.goToPage = goToPage;
+
+      // Bind all bottom nav tabs and Prev/Next buttons with data-page
+      document.querySelectorAll('[data-page]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          const targetPage = el.getAttribute('data-page');
+          goToPage(targetPage);
+        });
+      });
+
+      // Page 1: Open Your Gift button
+      const openGiftBtn = document.getElementById('open-gift-btn');
+      if (openGiftBtn) {
+        openGiftBtn.addEventListener('click', function () {
+          launchConfetti(90);
+          setTimeout(function () {
+            goToPage(2);
+          }, 380);
+        });
+      }
+
+      /* ---------------------------------------------------------
+         6. PAGE 2: RENDER POLAROIDS & LIGHTBOX MODAL
+         --------------------------------------------------------- */
+      const galleryEl = document.getElementById('polaroid-gallery');
+      const lightboxModal = document.getElementById('lightbox-modal');
+      const lightboxCard = document.getElementById('lightbox-card');
+      const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxDate = document.getElementById('lightbox-date');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxNote = document.getElementById('lightbox-note');
+
+      function openLightbox(index) {
+        const item = MEMORIES[index];
+        if (!item || !lightboxModal) return;
+
+        if (lightboxImg) {
+          lightboxImg.src = item.src;
+          lightboxImg.onerror = function () {
+            this.src = 'https://placehold.co/600x600/F6E4D5/8C654C?text=Memory+' + (index + 1);
+          };
+        }
+        if (lightboxDate) lightboxDate.textContent = item.date;
+        if (lightboxCaption) lightboxCaption.textContent = item.caption;
+        if (lightboxNote) lightboxNote.textContent = item.note;
+
+        lightboxModal.classList.remove('hidden');
+        lightboxModal.classList.add('flex');
+      }
+
+      function closeLightbox() {
+        if (!lightboxModal) return;
+        lightboxModal.classList.add('hidden');
+        lightboxModal.classList.remove('flex');
+      }
+
+      if (lightboxCloseBtn) {
+        lightboxCloseBtn.addEventListener('click', closeLightbox);
+      }
+      if (lightboxModal) {
+        lightboxModal.addEventListener('click', function (e) {
+          if (e.target === lightboxModal) {
+            closeLightbox();
+          }
+        });
+      }
+      if (lightboxCard) {
+        lightboxCard.addEventListener('click', function (e) {
+          e.stopPropagation();
+        });
+      }
+
+      if (galleryEl) {
+        MEMORIES.forEach(function (item, idx) {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'relative mx-auto max-w-[300px] cursor-pointer';
+          wrapper.innerHTML =
+            '<div class="washi-tape ' + item.tapeClass + '"></div>' +
+            '<div class="polaroid ' + item.tilt + ' hover:scale-[1.02]">' +
+              '<div class="aspect-square w-full overflow-hidden rounded-sm bg-[#F5EBE0]">' +
+                '<img src="' + item.src + '" alt="' + item.caption + '" class="w-full h-full object-cover" />' +
+              '</div>' +
+              '<p class="font-hand text-2xl text-center text-ink mt-3 leading-snug">' + item.caption + '</p>' +
+              '<p class="text-[11px] text-center font-semibold text-[#A08C79] mt-1">Tap to read note ✨</p>' +
+            '</div>';
+
+          const imgEl = wrapper.querySelector('img');
+          if (imgEl) {
+            imgEl.addEventListener('error', function () {
+              this.src = 'https://placehold.co/600x600/F6E4D5/8C654C?text=Memory+' + (idx + 1);
+            });
+          }
+
+          wrapper.addEventListener('click', function () {
+            openLightbox(idx);
+          });
+
+          galleryEl.appendChild(wrapper);
+        });
+      }
+
+      /* ---------------------------------------------------------
+         7. PAGE 3: RENDER 6 INTERACTIVE 3D FLIP CARDS
+         --------------------------------------------------------- */
+      const reasonsGrid = document.getElementById('reasons-grid');
+      const revealCounter = document.getElementById('reveal-counter');
+      const revealProgress = document.getElementById('reveal-progress');
+      const allRevealedBanner = document.getElementById('all-revealed-banner');
+
+      if (reasonsGrid) {
+        REASONS.forEach(function (reason, idx) {
+          const card = document.createElement('div');
+          card.className = 'flip-card';
+          card.setAttribute('role', 'button');
+          card.setAttribute('tabindex', '0');
+          card.innerHTML =
+            '<div class="flip-card-inner">' +
+              '<div class="flip-face ' + reason.frontBg + ' border ' + reason.border + ' p-3.5 flex flex-col items-center justify-center text-center">' +
+                '<span class="text-3xl mb-2">' + reason.emoji + '</span>' +
+                '<h3 class="font-hand text-2xl font-bold text-ink leading-tight">' + reason.title + '</h3>' +
+                '<span class="mt-2 text-[10px] font-semibold uppercase tracking-wider text-[#9A8572]">Tap to flip</span>' +
+              '</div>' +
+              '<div class="flip-face flip-back bg-white border-2 border-[#EED7CE] p-3.5 flex flex-col items-center justify-center text-center">' +
+                '<p class="text-xs sm:text-[13px] font-medium text-ink leading-relaxed">' + reason.message + '</p>' +
+                '<span class="mt-2 text-xs text-terracotta">♥</span>' +
+              '</div>' +
+            '</div>';
+
+          function flipHandler() {
+            card.classList.toggle('flipped');
+            const alreadyDone = flippedSet.size === REASONS.length;
+            flippedSet.add(idx);
+
+            const count = flippedSet.size;
+            if (revealCounter) revealCounter.textContent = count + ' / ' + REASONS.length + ' revealed';
+            if (revealProgress) revealProgress.style.width = ((count / REASONS.length) * 100) + '%';
+
+            if (count === REASONS.length && !alreadyDone) {
+              if (allRevealedBanner) allRevealedBanner.classList.remove('hidden');
+              launchConfetti(75);
+            }
+          }
+
+          card.addEventListener('click', flipHandler);
+          card.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              flipHandler();
+            }
+          });
+
+          reasonsGrid.appendChild(card);
+        });
+      }
+
+      /* ---------------------------------------------------------
+         8. PAGE 4: BIRTHDAY HUG & FLOATING HEARTS
+         --------------------------------------------------------- */
+      const hugBtn = document.getElementById('hug-btn');
+      const hugToast = document.getElementById('hug-toast');
+
+      if (hugBtn) {
+        hugBtn.addEventListener('click', function () {
+          launchConfetti(130);
+
+          if (hugToast) {
+            hugToast.style.opacity = '1';
+            clearTimeout(hugToastTimer);
+            hugToastTimer = setTimeout(function () {
+              hugToast.style.opacity = '0';
+            }, 3400);
+          }
+
+          const hearts = ['💖', '💕', '✨', '🎂', '🤍', '🌸'];
+          const rect = hugBtn.getBoundingClientRect();
+          for (let i = 0; i < 12; i++) {
+            const heartEl = document.createElement('span');
+            heartEl.className = 'rising-heart text-2xl';
+            heartEl.textContent = hearts[i % hearts.length];
+            heartEl.style.left = (rect.left + Math.random() * rect.width) + 'px';
+            heartEl.style.top = (rect.top + Math.random() * 20) + 'px';
+            heartEl.style.animationDelay = (Math.random() * 0.35) + 's';
+            document.body.appendChild(heartEl);
+            setTimeout(function () {
+              heartEl.remove();
+            }, 2300);
+          }
+        });
+      }
+
+      /* ---------------------------------------------------------
+         9. PAGE 5: INTERACTIVE CANDLE BLOW-OUT & SAFE MIC LISTENER
+         --------------------------------------------------------- */
+      const cakeStage = document.getElementById('cake-stage');
+      const candleFlame = document.getElementById('candle-flame');
+      const flameGlow = document.getElementById('flame-glow');
+      const wishStars = document.getElementById('wish-stars');
+      const smoke1 = document.getElementById('smoke-1');
+      const smoke2 = document.getElementById('smoke-2');
+      const smoke3 = document.getElementById('smoke-3');
+      const cakeTapHint = document.getElementById('cake-tap-hint');
+      const wishRevealedCard = document.getElementById('wish-revealed-card');
+      const blowCandleBtn = document.getElementById('blow-candle-btn');
+      const micBlowBtn = document.getElementById('mic-blow-btn');
+      const micBtnLabel = document.getElementById('mic-btn-label');
+      const micStatus = document.getElementById('mic-status');
+      const relightBtn = document.getElementById('relight-btn');
+
+      function stopMicListener(keepStatus) {
+        micActive = false;
+        if (micRafId) {
+          cancelAnimationFrame(micRafId);
+          micRafId = null;
+        }
+        if (micStream) {
+          try {
+            micStream.getTracks().forEach(function (track) {
+              track.stop();
+            });
+          } catch (e) {
+            // Safe ignore
+          }
+          micStream = null;
+        }
+        if (audioContext) {
+          try {
+            audioContext.close();
+          } catch (e) {
+            // Safe ignore
+          }
+          audioContext = null;
+        }
+        if (micBtnLabel) micBtnLabel.textContent = 'Use Mic to Blow';
+        if (!keepStatus && micStatus) {
+          micStatus.classList.add('hidden');
+        }
+      }
+
+      function blowOutCandle() {
+        if (!candleLit) return;
+        candleLit = false;
+
+        if (micActive) stopMicListener(false);
+
+        if (candleFlame) candleFlame.classList.add('blown-out');
+        if (flameGlow) flameGlow.classList.add('blown-out');
+        if (cakeStage) cakeStage.classList.add('bg-[#FAF4EB]');
+        if (wishStars) wishStars.classList.add('visible');
+
+        [smoke1, smoke2, smoke3].forEach(function (puff) {
+          if (!puff) return;
+          puff.classList.remove('active');
+          void puff.offsetWidth;
+          puff.classList.add('active');
+        });
+
+        if (cakeTapHint) cakeTapHint.textContent = '✨ Make it a magical year, Ruu ✨';
+        if (wishRevealedCard) wishRevealedCard.classList.remove('hidden');
+        if (blowCandleBtn) blowCandleBtn.classList.add('hidden');
+        if (micBlowBtn) micBlowBtn.classList.add('hidden');
+        if (micStatus) micStatus.classList.add('hidden');
+        if (relightBtn) relightBtn.classList.remove('hidden');
+
+        launchConfetti(160);
+      }
+
+      function relightCandle() {
+        candleLit = true;
+
+        if (candleFlame) candleFlame.classList.remove('blown-out');
+        if (flameGlow) flameGlow.classList.remove('blown-out');
+        if (cakeStage) cakeStage.classList.remove('bg-[#FAF4EB]');
+        if (wishStars) wishStars.classList.remove('visible');
+
+        [smoke1, smoke2, smoke3].forEach(function (puff) {
+          if (puff) puff.classList.remove('active');
+        });
+
+        if (cakeTapHint) cakeTapHint.textContent = 'Tap the flame to blow it out ✨';
+        if (wishRevealedCard) wishRevealedCard.classList.add('hidden');
+        if (blowCandleBtn) blowCandleBtn.classList.remove('hidden');
+        if (micBlowBtn) micBlowBtn.classList.remove('hidden');
+        if (relightBtn) relightBtn.classList.add('hidden');
+      }
+
+      async function toggleMicBlow() {
+        if (!candleLit) return;
+        if (micActive) {
+          stopMicListener(false);
+          return;
+        }
+
+        if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
+          if (micStatus) {
+            micStatus.textContent = 'Mic blow is not supported here—just tap the flame or button above! 🌬️';
+            micStatus.classList.remove('hidden');
+          }
+          return;
+        }
+
+        try {
+          micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) {
+            stopMicListener(false);
+            if (micStatus) {
+              micStatus.textContent = 'Audio detection is unavailable—just tap the candle to blow it out! 💕';
+              micStatus.classList.remove('hidden');
+            }
+            return;
+          }
+
+          audioContext = new AudioCtx();
+          const source = audioContext.createMediaStreamSource(micStream);
+          const analyser = audioContext.createAnalyser();
+          analyser.fftSize = 256;
+          source.connect(analyser);
+
+          micActive = true;
+          if (micBtnLabel) micBtnLabel.textContent = 'Listening... Blow now! 🌬️';
+          if (micStatus) {
+            micStatus.textContent = 'Give a gentle puff of air toward your phone mic (or tap the flame anytime).';
+            micStatus.classList.remove('hidden');
+          }
+
+          const dataArray = new Uint8Array(analyser.frequencyBinCount);
+          let blowFrames = 0;
+
+          function detectBlow() {
+            if (!micActive || !candleLit) return;
+            analyser.getByteFrequencyData(dataArray);
+
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+              sum += dataArray[i];
+            }
+            const avgVolume = sum / dataArray.length;
+
+            if (avgVolume > 52) {
+              blowFrames++;
+              if (blowFrames >= 5) {
+                blowOutCandle();
+                return;
+              }
+            } else {
+              blowFrames = Math.max(0, blowFrames - 1);
+            }
+
+            micRafId = requestAnimationFrame(detectBlow);
+          }
+
+          detectBlow();
+        } catch (err) {
+          if (micStatus) {
+            micStatus.textContent = 'Mic access is blocked or unavailable—no worries, just tap the flame or button above! 💕';
+            micStatus.classList.remove('hidden');
+          }
+          stopMicListener(true);
+        }
+      }
+
+      if (cakeStage) {
+        cakeStage.addEventListener('click', function () {
+          if (candleLit) blowOutCandle();
+        });
+        cakeStage.addEventListener('keydown', function (e) {
+          if ((e.key === 'Enter' || e.key === ' ') && candleLit) {
+            e.preventDefault();
+            blowOutCandle();
+          }
+        });
+      }
+
+      if (blowCandleBtn) {
+        blowCandleBtn.addEventListener('click', blowOutCandle);
+      }
+      if (micBlowBtn) {
+        micBlowBtn.addEventListener('click', toggleMicBlow);
+      }
+      if (relightBtn) {
+        relightBtn.addEventListener('click', relightCandle);
+      }
+
+      // Start cleanly on Page 1
+      goToPage(1);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initScrapbookApp);
+    } else {
+      initScrapbookApp();
+    }
+  </script>
+</body>
+</html>
